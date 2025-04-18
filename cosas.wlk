@@ -5,7 +5,6 @@ object mueble {
 }
 
 object comida {
-
 }
 
 object heladera {

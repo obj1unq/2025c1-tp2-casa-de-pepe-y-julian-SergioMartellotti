@@ -1,0 +1,103 @@
+import cosas.*
+import casa.*
+
+describe "Tests de casaDePepeYJulian"{
+    
+    method initialize() {
+        casaDePepeYJulian.comprar(heladera)
+        casaDePepeYJulian.comprar(cama)
+        casaDePepeYJulian.comprar(plancha)      
+    }
+
+    test "tiene 3 cosas"{
+        assert.equals(3, casaDePepeYJulian.cantidadDeCosasCompradas())
+    }
+    test "tiene algún electrodoméstico"{
+        assert.that(casaDePepeYJulian.tieneAlgun(electrodomestico))
+    }
+    test "tiene algún mueble" {
+        assert.that(casaDePepeYJulian.tieneAlgun(mueble))
+    }
+    test "no tiene alguna comida" {
+        assert.notThat(casaDePepeYJulian.tieneAlgun(comida))
+    }
+    test "ultima compra es un electrodomestico"{
+        const ultimaCompra = casaDePepeYJulian.cosasCasa().last()
+        assert.that(ultimaCompra.categoria() == electrodomestico)
+        assert.notThat(ultimaCompra.categoria() == mueble)
+    }
+    test "es derrochona"{
+        assert.that(casaDePepeYJulian.esDerrochona())
+    }
+    test "los electrodomesticos son heladera y plancha" {
+        const electrodomesticosComprados = 
+                casaDePepeYJulian.cosasCasa().filter({
+                    cosa=>cosa.categoria()==electrodomestico})
+        
+        assert.equals([heladera,plancha], electrodomesticosComprados)
+    }
+    test "no hay comida comprada" {
+        assert.notThat(casaDePepeYJulian.tieneAlgun(comida))
+    }
+    test "no es una mala época"{
+        assert.notThat(casaDePepeYJulian.malaEpoca())
+    }
+    test "indica que falta comprar tira de asado y fideos"{
+        assert.equals([tiraDeAsado, paqueteDeFideos], 
+            casaDePepeYJulian.queFaltaComprar([tiraDeAsado, plancha, paqueteDeFideos]))
+    }
+    test "falta comida"{
+        assert.that(casaDePepeYJulian.faltaComida())
+    }
+    test "las categorías compradas son electrodoméstico y mueble"{
+        const categoriasCompradas = casaDePepeYJulian.cosasCasa().map(
+            {cosa => cosa.categoria()}
+        ).asSet()
+        assert.equals(#{electrodomestico, mueble}, categoriasCompradas)
+    }
+}
+
+describe "test cuentas de la casa"{
+    test "la cuenta corriente tiene 20, deposita 1000, extrae 50, quedan 970 y falla al extraer más del limite"{
+        casaDePepeYJulian.cuenta(cuentaCorriente)
+        casaDePepeYJulian.cuenta().ingreso(20)
+        casaDePepeYJulian.cuenta().ingreso(1000)
+        assert.equals(1020, casaDePepeYJulian.cuenta().monto())
+
+        casaDePepeYJulian.cuenta().extraccion(50)
+        assert.equals(970, casaDePepeYJulian.cuenta().monto())
+
+        assert.throwsException({casaDePepeYJulian.cuenta().extraccion(2000)})
+    }
+
+    
+    test "CCG posee 500 y 20 de costo, deposita 1000, extrae 30, intenta depositar 2000, extrae 1450"{
+        casaDePepeYJulian.cuenta(cuentaConGastos)
+
+        casaDePepeYJulian.cuenta().ingreso(500)
+        casaDePepeYJulian.cuenta().gastos(20)
+
+        casaDePepeYJulian.cuenta().ingreso(1000)
+        assert.equals(1480, casaDePepeYJulian.cuenta().monto())
+
+        casaDePepeYJulian.cuenta().extraccion(30)
+        assert.equals(1450, casaDePepeYJulian.cuenta().monto())
+
+        assert.throwsException({casaDePepeYJulian.cuenta().ingreso(2000)})
+        assert.equals(1450, casaDePepeYJulian.cuenta().monto())
+
+        casaDePepeYJulian.cuenta().extraccion(2000)
+        assert.equals(-550, casaDePepeYJulian.cuenta().monto())
+
+    }
+
+    test "cuenta corriente con 1000, compra tira de asado y fideos, queda con 600"{
+        casaDePepeYJulian.cuenta(cuentaCorriente)
+        casaDePepeYJulian.cuenta().ingreso(1000)
+
+        casaDePepeYJulian.comprar(tiraDeAsado)
+        casaDePepeYJulian.comprar(paqueteDeFideos)
+
+        assert.equals(600, casaDePepeYJulian.cuenta().monto())
+    }
+}
