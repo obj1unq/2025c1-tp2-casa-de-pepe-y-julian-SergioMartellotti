@@ -4,9 +4,11 @@ import casa.*
 describe "Tests de casaDePepeYJulian"{
     
     method initialize() {
-        casaDePepeYJulian.comprar(heladera)
-        casaDePepeYJulian.comprar(cama)
-        casaDePepeYJulian.comprar(plancha)      
+        //casaDePepeYJulian.comprar(heladera)
+        //casaDePepeYJulian.comprar(cama)
+        //casaDePepeYJulian.comprar(plancha)      
+        casaDePepeYJulian.cosasCasa([heladera, cama, plancha])
+
     }
 
     test "tiene 3 cosas"{

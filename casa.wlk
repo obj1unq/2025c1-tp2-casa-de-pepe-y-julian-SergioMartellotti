@@ -1,7 +1,7 @@
 import cosas.* 
 
 object casaDePepeYJulian {
-    const cosasCasa = []
+    var cosasCasa = []
     var property cuenta = cuentaCorriente
 
     method comprar(cosa){
@@ -10,6 +10,8 @@ object casaDePepeYJulian {
     }
 
     method cosasCasa(){ return cosasCasa} //para testing
+    method cosasCasa(lista){ cosasCasa = lista}  //para testing
+
 
     method cantidadDeCosasCompradas(){
         return cosasCasa.size()
