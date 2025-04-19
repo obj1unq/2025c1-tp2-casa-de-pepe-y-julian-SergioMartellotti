@@ -11,6 +11,9 @@ describe "Tests de casaDePepeYJulian"{
 
     }
 
+    test "tiene heladera, cama y plancha"{
+        assert.equals([heladera, cama, plancha], casaDePepeYJulian.cosasCasa())
+    }
     test "tiene 3 cosas"{
         assert.equals(3, casaDePepeYJulian.cantidadDeCosasCompradas())
     }
@@ -24,19 +27,14 @@ describe "Tests de casaDePepeYJulian"{
         assert.notThat(casaDePepeYJulian.tieneAlgun(comida))
     }
     test "ultima compra es un electrodomestico"{
-        const ultimaCompra = casaDePepeYJulian.cosasCasa().last()
-        assert.that(ultimaCompra.categoria() == electrodomestico)
-        assert.notThat(ultimaCompra.categoria() == mueble)
+        assert.that(casaDePepeYJulian.vieneDeComprar(electrodomestico))
+        assert.notThat(casaDePepeYJulian.vieneDeComprar(mueble))
     }
     test "es derrochona"{
         assert.that(casaDePepeYJulian.esDerrochona())
     }
     test "los electrodomesticos son heladera y plancha" {
-        const electrodomesticosComprados = 
-                casaDePepeYJulian.cosasCasa().filter({
-                    cosa=>cosa.categoria()==electrodomestico})
-        
-        assert.equals([heladera,plancha], electrodomesticosComprados)
+        assert.equals([heladera,plancha], casaDePepeYJulian.comprados(electrodomestico))
     }
     test "no hay comida comprada" {
         assert.notThat(casaDePepeYJulian.tieneAlgun(comida))

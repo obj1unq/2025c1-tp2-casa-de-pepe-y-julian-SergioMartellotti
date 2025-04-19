@@ -22,6 +22,21 @@ object casaDePepeYJulian {
                 cosa => self.esCosaDeMismaCategoria(cosa, categoria)})
     }
 
+    method vieneDeComprar(categoria){
+        self.verificarQueHayaAlgo()
+        return self.ultimaCosaComprada().categoria() == categoria
+    }
+
+    method verificarQueHayaAlgo(){
+        if(self.cantidadDeCosasCompradas() == 0){
+            self.error("No hay nada comprado aún.")
+        }
+    }
+
+    method ultimaCosaComprada(){
+        return cosasCasa.last()
+    }
+    
     method esDerrochona(){
         return self.importeTotalDeCompras() >= 9000
     }
