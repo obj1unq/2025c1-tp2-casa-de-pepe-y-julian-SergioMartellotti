@@ -5,7 +5,7 @@ object casaDePepeYJulian {
     var property cuenta = cuentaCorriente
 
     method comprar(cosa){
-        cuenta.extraccion(cosa.precio())
+        cuenta.extraer(cosa.precio())
         cosasCasa.add(cosa)
     }
 
@@ -74,6 +74,11 @@ object casaDePepeYJulian {
     method faltaComida(){
         return 2 > cosasCasa.count({cosa => cosa.categoria()==comida})
     }
+
+    method categoriasCompradas(){
+        return cosasCasa.map(
+                    {cosa => cosa.categoria()}).asSet()
+    }
 }
 
 
@@ -84,11 +89,11 @@ object cuentaCorriente {
         return monto
     }
 
-    method ingreso(_monto){
+    method ingresar(_monto){
         monto += _monto
     }
 
-    method extraccion(_monto){
+    method extraer(_monto){
         self.validarGasto(_monto)
         monto -= _monto
     }
@@ -113,12 +118,12 @@ object cuentaConGastos{
         gastosCCG = _gastosCCG
     }
 
-    method ingreso(_monto){
+    method ingresar(_monto){
         self.validarIngreso(_monto)
         monto = monto + _monto - gastosCCG
     }
 
-    method extraccion(_monto){
+    method extraer(_monto){
         monto -= _monto
     }
 

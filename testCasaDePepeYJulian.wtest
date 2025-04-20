@@ -1,7 +1,7 @@
 import cosas.*
 import casa.*
 
-describe "Tests de casaDePepeYJulian"{
+describe "Tests de cosas y sus categorias de la casaDePepeYJulian"{
     
     method initialize() {
         //casaDePepeYJulian.comprar(heladera)
@@ -50,50 +50,48 @@ describe "Tests de casaDePepeYJulian"{
         assert.that(casaDePepeYJulian.faltaComida())
     }
     test "las categorías compradas son electrodoméstico y mueble"{
-        const categoriasCompradas = casaDePepeYJulian.cosasCasa().map(
-            {cosa => cosa.categoria()}
-        ).asSet()
-        assert.equals(#{electrodomestico, mueble}, categoriasCompradas)
+
+        assert.equals(#{electrodomestico, mueble}, casaDePepeYJulian.categoriasCompradas())
     }
 }
 
-describe "test cuentas de la casa"{
+describe "Tests cuentas bancarias de la casa"{
     test "la cuenta corriente tiene 20, deposita 1000, extrae 50, quedan 970 y falla al extraer más del limite"{
         casaDePepeYJulian.cuenta(cuentaCorriente)
-        casaDePepeYJulian.cuenta().ingreso(20)
-        casaDePepeYJulian.cuenta().ingreso(1000)
+        casaDePepeYJulian.cuenta().ingresar(20)
+        casaDePepeYJulian.cuenta().ingresar(1000)
         assert.equals(1020, casaDePepeYJulian.cuenta().monto())
 
-        casaDePepeYJulian.cuenta().extraccion(50)
+        casaDePepeYJulian.cuenta().extraer(50)
         assert.equals(970, casaDePepeYJulian.cuenta().monto())
 
-        assert.throwsException({casaDePepeYJulian.cuenta().extraccion(2000)})
+        assert.throwsException({casaDePepeYJulian.cuenta().extraer(2000)})
     }
 
     
     test "CCG posee 500 y 20 de costo, deposita 1000, extrae 30, intenta depositar 2000, extrae 1450"{
         casaDePepeYJulian.cuenta(cuentaConGastos)
 
-        casaDePepeYJulian.cuenta().ingreso(500)
+        casaDePepeYJulian.cuenta().ingresar(500)
         casaDePepeYJulian.cuenta().gastos(20)
 
-        casaDePepeYJulian.cuenta().ingreso(1000)
+        casaDePepeYJulian.cuenta().ingresar(1000)
         assert.equals(1480, casaDePepeYJulian.cuenta().monto())
 
-        casaDePepeYJulian.cuenta().extraccion(30)
+        casaDePepeYJulian.cuenta().extraer(30)
         assert.equals(1450, casaDePepeYJulian.cuenta().monto())
 
-        assert.throwsException({casaDePepeYJulian.cuenta().ingreso(2000)})
+        assert.throwsException({casaDePepeYJulian.cuenta().ingresar(2000)})
         assert.equals(1450, casaDePepeYJulian.cuenta().monto())
 
-        casaDePepeYJulian.cuenta().extraccion(2000)
+        casaDePepeYJulian.cuenta().extraer(2000)
         assert.equals(-550, casaDePepeYJulian.cuenta().monto())
 
     }
 
     test "cuenta corriente con 1000, compra tira de asado y fideos, queda con 600"{
         casaDePepeYJulian.cuenta(cuentaCorriente)
-        casaDePepeYJulian.cuenta().ingreso(1000)
+        casaDePepeYJulian.cuenta().ingresar(1000)
 
         casaDePepeYJulian.comprar(tiraDeAsado)
         casaDePepeYJulian.comprar(paqueteDeFideos)
